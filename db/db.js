@@ -6,6 +6,9 @@ if (!process.env.WEATHER_ENTRY_EXPIRATION_SECONDS) {
 }
 
 var WEATHER_ENTRY_EXPIRATION_SECONDS = parseInt(process.env.WEATHER_ENTRY_EXPIRATION_SECONDS);
+if (!WEATHER_ENTRY_EXPIRATION_SECONDS) {
+    throw Error("WEATHER_ENTRY_EXPIRATION_SECONDS is not an integer")
+}
 
 if (!process.env.MONGODB_URI) {
     throw Error("MONGODB_URI undefined")
@@ -21,6 +24,7 @@ var dbObject = {
             {locationName: locationName, weatherInfo: weatherInfo, createdAt: new Date()},
             {upsert: true})
             .then(function (oldObject) {
+                console.log('Updated ', locationName)
             });
     },
 

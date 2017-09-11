@@ -44,3 +44,5 @@ module.exports = {
 // - comments
 // - remove secret constants
 // - dev mode
+// - env variable service
+// - expires - need to delete index! (

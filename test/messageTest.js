@@ -252,10 +252,10 @@ function createFacebookPageBody(messageText) {
                 messaging: [
                     {
                         sender: {
-                            id: FACEBOOK_SERVICE_ID,
+                            id: FACEBOOK_SERVICE_ID
                         },
                         recipient: {
-                            id: BOT_SERVICE_ID,
+                            id: BOT_SERVICE_ID
                         },
                         timestamp: 123456789,
                         message: {
@@ -263,7 +263,7 @@ function createFacebookPageBody(messageText) {
                         }
                     }
                 ]
-            },
+            }
         ]
     };
 }

@@ -1,0 +1,1 @@
+curl -i -H "Content-Type: application/json" -X POST -d '{"object": "page","entry": [{"messaging": [{"sender": {"id": "1"},"recipient": {"id": "2"},"timestamp": "123456789","message": {"text": "weather london"}}]}]}' http://localhost:3000/webhook
