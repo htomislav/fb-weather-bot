@@ -5,6 +5,10 @@ if (!process.env.WEATHER_ENTRY_EXPIRATION_SECONDS) {
     throw Error("WEATHER_ENTRY_EXPIRATION_SECONDS undefined")
 }
 
+if (!process.env.MONGODB_URI) {
+    throw Error("MONGODB_URI undefined")
+}
+
 mongoose.Promise = Promise;
 
 var dbObject = {
@@ -27,7 +31,7 @@ var dbObject = {
     }
 }
 
-mongoose.connect('mongodb://localhost/fb-weather-db')
+mongoose.connect(process.env.MONGODB_URI)
     .then(function () {
         console.log('Connected to MongoDB');
         dbObject.CurrentWeather = createCurrentWeatherSchema();
