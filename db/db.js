@@ -5,6 +5,8 @@ if (!process.env.WEATHER_ENTRY_EXPIRATION_SECONDS) {
     throw Error("WEATHER_ENTRY_EXPIRATION_SECONDS undefined")
 }
 
+var WEATHER_ENTRY_EXPIRATION_SECONDS = parseInt(process.env.WEATHER_ENTRY_EXPIRATION_SECONDS);
+
 if (!process.env.MONGODB_URI) {
     throw Error("MONGODB_URI undefined")
 }
@@ -42,7 +44,7 @@ function createCurrentWeatherSchema() {
     var currentWeatherSchema = mongoose.Schema({
         locationName: {type: String, unique: true, index: true},
         weatherInfo: mongoose.Schema.Types.Mixed,
-        createdAt: {type: Date, expires: process.env.WEATHER_ENTRY_EXPIRATION_SECONDS}
+        createdAt: {type: Date, expires: WEATHER_ENTRY_EXPIRATION_SECONDS}
     });
 
     return mongoose.model('CurrentWeather', currentWeatherSchema);
