@@ -19,7 +19,7 @@ describe('Verification', function () {
             });
     }).timeout(1000);
 
-    it('Verification with invalid valid does not pass', function (done) {
+    it('Verification with invalid token does not pass', function (done) {
         request(app)
             .get('/webhook?hub.mode=subscribe&hub.challenge=786761164&hub.verify_token=xxx')
             .expect(403)

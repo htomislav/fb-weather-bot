@@ -1,21 +1,21 @@
 const express = require('express');
 
-if (!process.env.WEBHOOK_VERIFY_TOKEN) {
-    throw Error("WEBHOOK_VERIFY_TOKEN undefined")
-}
+const verificationService = require('../services/verificationService')
 
 module.exports = function () {
     var router = express.Router();
 
     router.get('',
         function (req, res) {
-            if (req.query['hub.mode'] === 'subscribe' &&
-                req.query['hub.verify_token'] === process.env.WEBHOOK_VERIFY_TOKEN) {
-                console.log("Service validated");
-                res.status(200).send(req.query['hub.challenge']);
+            var result = verificationService.verify({
+                mode: req.query['hub.mode'],
+                token: req.query['hub.verify_token'],
+                challenge: req.query['hub.challenge']
+            })
+
+            if (result.isSuccess) {
+                res.status(200).send(result.response);
             } else {
-                console.log(
-                    "Service validation failed, verify token:", req.query['hub.verify_token']);
                 res.sendStatus(403);
             }
         });

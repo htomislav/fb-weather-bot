@@ -45,4 +45,5 @@ module.exports = {
 // - remove secret constants
 // - dev mode
 // - env variable service
-// - expires - need to delete index! (
+// - expires - need to delete index! (https://stackoverflow.com/questions/14597241/setting-expiry-time-for-a-collection-in-mongodb-using-mongoose)
+// - console log warning related to mongodb etc
