@@ -1,0 +1,27 @@
+{
+  "name": "fb-weather-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "bluebird": "^2.10.2",
+    "body-parser": "~1.13.2",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "cookie-parser": "~1.3.5",
+    "dotenv": "^4.0.0",
+    "express": "~4.13.1",
+    "mocha": "^3.1.0",
+    "mongoose": "^4.11.11",
+    "nock": "^9.0.2",
+    "request": "^2.81.0",
+    "supertest": "^2.0.1",
+    "supertest-as-promised": "^4.0.1"
+  },
+  "scripts": {
+    "start": "nodemon -e js,html,css app.js",
+    "test": "node ./node_modules/mocha/bin/mocha"
+  },
+  "author": "tomislav hoborka",
+  "license": "ISC"
+}
