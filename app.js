@@ -17,6 +17,7 @@ app.use(function (req, res, next) {
 });
 
 // routes
+app.use('/', require('./routes/statusRouter')());
 app.use('/webhook', require('./routes/verificationRouter')());
 app.use('/webhook', require('./routes/messageRouter')());
 

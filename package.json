@@ -19,7 +19,7 @@
     "supertest-as-promised": "^4.0.1"
   },
   "scripts": {
-    "start": "nodemon -e js,html,css app.js",
+    "start": "node app.js",
     "test": "node ./node_modules/mocha/bin/mocha"
   },
   "author": "tomislav hoborka",
