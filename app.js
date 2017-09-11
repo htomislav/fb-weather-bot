@@ -3,7 +3,6 @@ require('./loadEnvironmentVariables')
 const express = require('express')
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const db = require('./db/db');
 
 const app = express()
 
@@ -21,9 +20,9 @@ app.use(function (req, res, next) {
 app.use('/webhook', require('./routes/verificationRouter')());
 app.use('/webhook', require('./routes/messageRouter')());
 
-// todo - use properties for port and host
-app.listen(3000, function () {
-    console.log('App listening on port 3000')
+var port = process.env.PORT || 3000;
+app.listen(port, function () {
+    console.log('App listening on port', port)
 })
 
 
