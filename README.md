@@ -1,10 +1,10 @@
 # fb-weather-bot
 
-*Fb-weather-bot* is a Facebook Messanger bot service that provides information about the weather. It integrates with the [Facebook Messanger Platform] and the [OpenWeatherMap] to provide current weather information to the users.
+*Fb-weather-bot* is a Facebook Messanger bot service that provides information about the weather. It integrates with the [Facebook Messanger Platform] and the [OpenWeatherMap] to provide current weather information to the Messanger users.
 
 # How it works
 
-*Fb-weather-bot* exposes a webhook interface in order to receive messages from the Facebook Messanger. Each message that the user sends from the Messanger is sent to the *fb-weather-bot* where it is appropriately handled. If the message matches against the regular weather query pattern, OpenWeatherMap service will be queried for the current weather for the specified location. The result is then sent back to the Messanger which will be shown to the user as a result.
+*Fb-weather-bot* exposes a webhook interface in order to receive messages from the Facebook Messanger. Each message that a user sends from the Messanger is sent to the *fb-weather-bot* where it is appropriately processed. If the message matches against the message weather pattern, OpenWeatherMap service will be queried for the current weather for the specified location. The result is then sent back to the Messanger which will be shown to the user as a result.
 
 ![alt text](/docs/Overview.png)
 
@@ -25,15 +25,15 @@ You need an OpenWeatherMap service token which is used when querying the service
 # Service details
 
 The service is a node.js express application. It exposes the following paths:
-  - */webhook* (*GET*) - used for webhook verification
-  - */webhook* (*POST*) - used for receiving messages from the Facebook
-  - */ (*GET*) - shows service status
+  - */webhook* (GET) - used for webhook verification
+  - */webhook* (POST) - used for receiving messages from the Facebook
+  - */* (GET) - shows service status
 
-The main responsibility is to receive messages from the Facebook Messanger and respond with the appropriate information.
-When a Facebook message is received, it is first checked if the request is valid (if it has all the necessary data). If so, HTTP status 200 is returned immediately and message processing is done asynchronously. 
+The main service responsibility is to receive messages from the Facebook Messanger and respond with the appropriate information.
+When a Facebook message is received, it is first checked if the request is valid (if it has all the necessary data). If so, HTTP status *200* is returned but message processing is done later (asynchronously). 
 
 ## Input message format
-Input message (from Facebook) has to match this criteria to be identified as a proper request:
+Input message (from the Facebook) has to match this criteria to be identified as a proper request:
 > **weather** *`<city>`*,*`<country code>`*
 
 For example:
@@ -72,11 +72,11 @@ If the input message cannot be matched as valid, help message will be sent back 
 
 > To search for current weather, type: `'weather <city>,<country>'` (`<country>` is optional)
 
-Messanger responses are sent in asynchronous fashion. This means that *fb-weather-bot* service sends requests containing weather message info to the Messanger API at some later time (and not immediately when it receives a request from the Messanger). 
+Messanger responses are provided in asynchronous fashion. This means that *fb-weather-bot* service sends requests containing weather message info to the Messanger API at some later time (and not immediately when it receives a request from the Messanger). 
 
 # System properties
 
-*fb-weather-bot* service exposes the following environment variables:
+The service exposes the following environment variables:
 
 > *WEATHER_ENTRY_EXPIRATION_SECONDS* - how much time (in seconds) until weather info is removed from the cache
 
