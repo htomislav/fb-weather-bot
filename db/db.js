@@ -1,22 +1,10 @@
-var mongoose = require('mongoose');
-var Promise = require('bluebird');
-
-if (!process.env.WEATHER_ENTRY_EXPIRATION_SECONDS) {
-    throw Error("WEATHER_ENTRY_EXPIRATION_SECONDS undefined")
-}
-
-var WEATHER_ENTRY_EXPIRATION_SECONDS = parseInt(process.env.WEATHER_ENTRY_EXPIRATION_SECONDS);
-if (!WEATHER_ENTRY_EXPIRATION_SECONDS) {
-    throw Error("WEATHER_ENTRY_EXPIRATION_SECONDS is not an integer")
-}
-
-if (!process.env.MONGODB_URI) {
-    throw Error("MONGODB_URI undefined")
-}
+const mongoose = require('mongoose');
+const Promise = require('bluebird');
+const propertiesProvider = require('../services/propertiesProvider');
 
 mongoose.Promise = Promise;
 
-var dbObject = {
+const dbObject = {
 
     updateCurrentWeather: function (locationName, weatherInfo) {
         return this.CurrentWeather.findOneAndUpdate(
@@ -37,7 +25,7 @@ var dbObject = {
     }
 }
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(propertiesProvider.MONGODB_URI)
     .then(function () {
         console.log('Connected to MongoDB');
         dbObject.CurrentWeather = createCurrentWeatherSchema();
@@ -48,7 +36,7 @@ function createCurrentWeatherSchema() {
     var currentWeatherSchema = mongoose.Schema({
         locationName: {type: String, unique: true, index: true},
         weatherInfo: mongoose.Schema.Types.Mixed,
-        createdAt: {type: Date, expires: WEATHER_ENTRY_EXPIRATION_SECONDS}
+        createdAt: {type: Date, expires: propertiesProvider.WEATHER_ENTRY_EXPIRATION_SECONDS}
     });
 
     return mongoose.model('CurrentWeather', currentWeatherSchema);

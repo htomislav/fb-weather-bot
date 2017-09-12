@@ -1,4 +1,5 @@
 require('./utils/testSetup')
+const propertiesProvider = require('../services/propertiesProvider');
 
 var chai = require('chai');
 var chaiAsPromised = require("chai-as-promised");
@@ -248,7 +249,7 @@ function mockFacebookSendApi() {
     var mockObject = {
         init: function () {
             mockObject.nock = nock('https://graph.facebook.com')
-                .post('/v2.6/me/messages?access_token=' + process.env.PAGE_ACCESS_TOKEN, function (body) {
+                .post('/v2.6/me/messages?access_token=' + propertiesProvider.PAGE_ACCESS_TOKEN, function (body) {
                     expect(body.recipient.id).to.equal(FACEBOOK_SERVICE_ID)
                     expect(body.message.text).to.equal(mockObject.messsageText)
                     mockObject.isSuccessfullyCalled = true;
@@ -272,7 +273,7 @@ function mockWeatherApi() {
     var mockObject = {
         expectWeatherQuery: function (weatherQuery) {
             mockObject.nock = nock('http://api.openweathermap.org')
-                .get('/data/2.5/weather?q=' + weatherQuery + '&APPID=' + process.env.WEATHER_APP_ID + "&units=metric", function (body) {
+                .get('/data/2.5/weather?q=' + weatherQuery + '&APPID=' + propertiesProvider.WEATHER_APP_ID + "&units=metric", function (body) {
                     mockObject.isSuccessfullyCalled = true;
                     return true;
                 })

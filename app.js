@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 
 const app = express()
 
+// express parsing
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
@@ -21,11 +22,11 @@ app.use('/', require('./routes/statusRouter')());
 app.use('/webhook', require('./routes/verificationRouter')());
 app.use('/webhook', require('./routes/messageRouter')());
 
+// server
 var port = process.env.PORT || 3000;
 app.listen(port, function () {
     console.log('App listening on port', port)
 })
-
 
 // needed for the tests
 module.exports = {
@@ -42,8 +43,6 @@ module.exports = {
 // - add service version to route
 // - package.json: dev dependencies, repository
 // - comments
-// - remove secret constants
 // - dev mode
-// - env variable service
 // - expires - need to delete index! (https://stackoverflow.com/questions/14597241/setting-expiry-time-for-a-collection-in-mongodb-using-mongoose)
 // - console log warning related to mongodb etc

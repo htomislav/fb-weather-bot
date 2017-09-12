@@ -1,4 +1,5 @@
 require('./utils/testSetup')
+const propertiesProvider = require('../services/propertiesProvider');
 
 var chai = require('chai');
 var chaiAsPromised = require("chai-as-promised");
@@ -11,7 +12,7 @@ describe('Verification', function () {
 
     it('Verification with valid token passes', function (done) {
         request(app)
-            .get('/webhook?hub.mode=subscribe&hub.challenge=786761164&hub.verify_token=' + process.env.WEBHOOK_VERIFY_TOKEN)
+            .get('/webhook?hub.mode=subscribe&hub.challenge=786761164&hub.verify_token=' + propertiesProvider.WEBHOOK_VERIFY_TOKEN)
             .expect(200)
             .then(function (res) {
                 expect(res.text).to.equal('786761164')

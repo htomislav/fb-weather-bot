@@ -1,8 +1,6 @@
 const request = require('request');
 
-if (!process.env.WEATHER_APP_ID) {
-    throw Error("WEATHER_APP_ID undefined")
-}
+const propertiesProvider = require('../propertiesProvider');
 
 module.exports = {
     sendWeatherQuery: function (locationName) {
@@ -11,7 +9,7 @@ module.exports = {
             request({
                 uri: 'http://api.openweathermap.org/data/2.5/weather?q='
                 + locationName
-                + '&APPID=' + process.env.WEATHER_APP_ID
+                + '&APPID=' + propertiesProvider.WEATHER_APP_ID
                 + '&units=metric',
                 method: 'GET',
                 timeout: 5000,
