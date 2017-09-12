@@ -1,4 +1,3 @@
-
 const propertiesProvider = require('./propertiesProvider');
 
 module.exports = {
@@ -11,8 +10,7 @@ module.exports = {
                 response: verificationData.challenge
             };
         } else {
-            console.log(
-                "Service validation failed, verify token:", verificationData.token);
+            console.log("Service validation failed, verify token:", verificationData.token);
             return {
                 isSuccess: false,
             };
