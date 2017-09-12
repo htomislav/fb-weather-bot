@@ -98,7 +98,7 @@ These are the things that could be done further:
  - improve Messanger responses to include HTML - only plain text is used
  - improve logging - currently, console.log is used
  - what does the OpenWeatherMap block response look like (when the request rate is too high) - I could not get this from the service as it apparently allows many requests one after another   
- - automate changing WEATHER_ENTRY_EXPIRATION_SECONDS - now expiration index needs to be delete manually 
+ - automate changing WEATHER_ENTRY_EXPIRATION_SECONDS - currently expiration index needs to be delete manually 
 
    [Facebook Messanger Platform]: <https://developers.facebook.com/docs/messenger-platform>
    [OpenWeatherMap]: <https://openweathermap.org>
