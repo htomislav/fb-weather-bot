@@ -41,7 +41,6 @@ module.exports = {
 
 // todo
 // - es7
-// - console log warning related to mongodb etc
 
 
 // to be done
