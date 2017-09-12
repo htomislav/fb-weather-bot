@@ -4,7 +4,7 @@ module.exports = function () {
     var router = express.Router();
 
     router.get('', function (req, res) {
-        res.send("Service alive");
+        res.send("Service is alive");
     })
 
     return router;

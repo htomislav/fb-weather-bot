@@ -5,7 +5,7 @@ var chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
 var expect = chai.expect;
 
-const weatherMatcher = require('../services/weatherMatcher');
+const weatherMatcher = require('../services/weather/weatherMatcher');
 
 describe('Message', function () {
 

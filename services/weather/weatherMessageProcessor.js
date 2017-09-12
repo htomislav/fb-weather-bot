@@ -1,5 +1,5 @@
-const weatherApiService = require('./weatherApiService');
-const db = require('./../db/db');
+const weatherApiSender = require('../apiSenders/weatherApiSender');
+const db = require('../../db/db');
 
 module.exports = {
 
@@ -12,7 +12,7 @@ module.exports = {
                     console.log(locationName, "found in cache")
                     return toWeatherResponseMessage(weatherDao.weatherInfo);
                 }
-                return weatherApiService.sendWeatherQuery(locationName)
+                return weatherApiSender.sendWeatherQuery(locationName)
                     .then(function (weatherResponseBody) {
                         return db.updateCurrentWeather(locationName, weatherResponseBody)
                             .then(function () {
