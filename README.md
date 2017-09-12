@@ -88,11 +88,11 @@ The service exposes the following environment variables:
 
 > *MONGODB_URI* - MongoDB connection string (automatically provided when hosted on [Heroku])
 
-> *ENV_FILE_LOCATION* - specifies *.env* file location
+> *ENV_FILE_LOCATION* - specifies *.env* file location (optional)
 
 *NOTE - when changing WEATHER_ENTRY_EXPIRATION_SECONDS parameter, be sure to recreate the expiration index in the MongoDB, otherwise the change will not have any effect - see [this](https://stackoverflow.com/questions/14597241/setting-expiry-time-for-a-collection-in-mongodb-using-mongoose).* 
 
-Environment variables can be read from the *.env* file located in the project root (or anywhere else where *ENV_FILE_LOCATION* references)
+Environment variables can be read from the *.env* file located in the project root (or anywhere else where *ENV_FILE_LOCATION* points tos)
 
 # Tests
 
