@@ -1,11 +1,11 @@
-require('./testSetup')
+require('./utils/testSetup')
 require('../loadEnvironmentVariables')
 
 var chai = require('chai');
 var chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
 var expect = chai.expect;
-var eventualAwait = require('./eventualAwait')
+var eventualAwait = require('./utils/eventualAwait')
 const db = require('../db/db');
 
 describe('DB', function () {

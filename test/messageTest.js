@@ -1,4 +1,4 @@
-require('./testSetup')
+require('./utils/testSetup')
 
 var chai = require('chai');
 var chaiAsPromised = require("chai-as-promised");
@@ -6,7 +6,7 @@ chai.use(chaiAsPromised);
 var expect = chai.expect;
 var request = require("supertest-as-promised");
 var nock = require('nock');
-var eventualAwait = require('./eventualAwait')
+var eventualAwait = require('./utils/eventualAwait')
 var app = require('../app').app;
 const db = require('../db/db');
 

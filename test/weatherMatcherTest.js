@@ -1,4 +1,4 @@
-require('./testSetup')
+require('./utils/testSetup')
 
 var chai = require('chai');
 var chaiAsPromised = require("chai-as-promised");
