@@ -10,6 +10,7 @@ var nock = require('nock');
 var eventualAwait = require('./utils/eventualAwait')
 var app = require('../app').app;
 const db = require('../db/db');
+const weatherDal = require('../db/weatherDal');
 
 const BOT_SERVICE_ID = 100000;
 const FACEBOOK_SERVICE_ID = 200000;
@@ -19,10 +20,10 @@ describe('Message', function () {
     beforeEach(function (done) {
         nock.cleanAll();
         eventualAwait(function () {
-            return db.isInitialized;
+            return db.isInitialized();
         })
             .then(function () {
-                db.deleteAllCurrentWeathers()
+                weatherDal.deleteAllCurrentWeathers()
                     .then(function () {
                         done();
                     })

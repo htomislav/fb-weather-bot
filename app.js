@@ -1,4 +1,5 @@
 require('./loadEnvironmentVariables')
+require('./db/db')
 
 const express = require('express')
 const cookieParser = require('cookie-parser');
