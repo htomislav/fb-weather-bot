@@ -62,13 +62,5 @@ describe('Message', () => {
         expect(match).to.deep.equal({city: "london", country: "uk"})
         done();
     });
-
-    // todo - fix this
-    // it("Test 'weaTher london,uk'", (done) => {
-    //     const match = weatherMatcher.match("weaTher lon4don,uk");
-    //     expect(match).to.deep.equal({city: "london", country: "uk"})
-    //     done();
-    // });
-
 });
 
