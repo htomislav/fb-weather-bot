@@ -14,10 +14,12 @@ module.exports = {
                 }
                 return weatherApiSender.sendWeatherQuery(locationName)
                     .then(function (weatherResponseBody) {
-                        return db.updateCurrentWeather(locationName, weatherResponseBody)
-                            .then(function () {
-                                return toWeatherResponseMessage(weatherResponseBody);
-                            })
+                        if (weatherResponseBody) {
+                            return db.updateCurrentWeather(locationName, weatherResponseBody)
+                                .then(function () {
+                                    return toWeatherResponseMessage(weatherResponseBody);
+                                })
+                        }
                     })
             })
     }

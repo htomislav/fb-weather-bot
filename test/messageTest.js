@@ -213,6 +213,28 @@ describe('Message', function () {
             })
     }).timeout(5000);
 
+    it('Weather service returns status 500', function (done) {
+        var facebookSendApiMock = mockFacebookSendApi()
+            .expectMessage("Weather service is temporary unavailable, please try again later");
+        var weatherApiMock = mockWeatherApi()
+            .expectWeatherQuery("london,uk")
+            .invalidHttpStatus(500);
+        request(app)
+            .post('/webhook')
+            .send(createFacebookPageBody("weather london, uk"))
+            .expect(200)
+            .then(function (res) {
+                expect(res.body).to.deep.equal({})
+            })
+            .then(function () {
+                // APIs might be called after the response
+                return eventualAwaitForFacebookAndWeatherMocks(facebookSendApiMock, weatherApiMock)
+            })
+            .then(function () {
+                done();
+            })
+    }).timeout(2000);
+
 })
 
 function delay(mSec) {
@@ -284,7 +306,14 @@ function mockWeatherApi() {
             mockObject.nock = mockObject.nock
                 .reply(200, getWeatherData(weatherInfo));
             return mockObject;
+        },
+        invalidHttpStatus: function (httpStatus) {
+            // real nock is received after the reply() call!
+            mockObject.nock = mockObject.nock
+                .reply(httpStatus);
+            return mockObject;
         }
+
     }
     return mockObject;
 }

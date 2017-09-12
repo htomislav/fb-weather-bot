@@ -51,7 +51,13 @@ function processMessageText(messageText) {
         var weatherMatchResult = weatherMatcher.match(messageText);
         if (weatherMatchResult) {
             console.log("Weather match:", weatherMatchResult)
-            return weatherMessageProcessor.process(weatherMatchResult);
+            return weatherMessageProcessor.process(weatherMatchResult)
+                .then(function (result) {
+                    if (!result) {
+                        return "Weather service is temporary unavailable, please try again later";
+                    }
+                    return result
+                })
         }
     }
 
