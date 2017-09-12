@@ -1,30 +1,30 @@
 require('./utils/testSetup')
 const propertiesProvider = require('../services/propertiesProvider');
 
-var chai = require('chai');
-var chaiAsPromised = require("chai-as-promised");
+const chai = require('chai');
+const chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
-var expect = chai.expect;
-var request = require("supertest-as-promised");
-var app = require('../app').app;
+const expect = chai.expect;
+const request = require("supertest-as-promised");
+const app = require('../app').app;
 
-describe('Verification', function () {
+describe('Verification', () => {
 
-    it('Verification with valid token passes', function (done) {
+    it('Verification with valid token passes', (done) => {
         request(app)
-            .get('/webhook?hub.mode=subscribe&hub.challenge=786761164&hub.verify_token=' + propertiesProvider.WEBHOOK_VERIFY_TOKEN)
+            .get(`/webhook?hub.mode=subscribe&hub.challenge=786761164&hub.verify_token=${propertiesProvider.WEBHOOK_VERIFY_TOKEN}`)
             .expect(200)
-            .then(function (res) {
+            .then((res) => {
                 expect(res.text).to.equal('786761164')
                 done();
             });
     }).timeout(1000);
 
-    it('Verification with invalid token does not pass', function (done) {
+    it('Verification with invalid token does not pass', (done) => {
         request(app)
             .get('/webhook?hub.mode=subscribe&hub.challenge=786761164&hub.verify_token=xxx')
             .expect(403)
-            .then(function (res) {
+            .then((res) => {
                 done();
             });
     }).timeout(1000);

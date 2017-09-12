@@ -5,20 +5,20 @@ module.exports = {
 
     // processes successful weather match results by either contacting weather API
     // for result or returning the result from the cache.
-    process: function (weatherMatchResult) {
+    process(weatherMatchResult) {
         const locationName = toLocationName(weatherMatchResult);
 
         return weatherDal.findCurrentWeather(locationName)
-            .then(function (weatherDao) {
+            .then((weatherDao) => {
                 if (weatherDao) {
                     console.log(locationName, "found in cache")
                     return toWeatherResponseMessage(weatherDao.weatherInfo);
                 }
                 return weatherApiSender.sendWeatherQuery(locationName)
-                    .then(function (weatherResponseBody) {
+                    .then((weatherResponseBody) => {
                         if (weatherResponseBody) {
                             return weatherDal.updateCurrentWeather(locationName, weatherResponseBody)
-                                .then(function () {
+                                .then(() => {
                                     return toWeatherResponseMessage(weatherResponseBody);
                                 })
                         }
@@ -28,7 +28,7 @@ module.exports = {
 }
 
 function toLocationName(weatherMatchResult) {
-    var weatherQuery = weatherMatchResult.city;
+    let weatherQuery = weatherMatchResult.city;
     if (weatherMatchResult.country) {
         weatherQuery += ',' + weatherMatchResult.country;
     }
@@ -36,9 +36,9 @@ function toLocationName(weatherMatchResult) {
 }
 
 function toWeatherResponseMessage(weatherInfo) {
-    var responseText = weatherInfo.name + ", " + weatherInfo.sys.country + ": ";
-    var weather = weatherInfo.weather[0];
-    responseText += weather.main + " - " + weather.description;
-    responseText += ", temperature: " + weatherInfo.main.temp + " Celsius"
-    return responseText;
+    let weather = weatherInfo.weather[0];
+    const respnseText = `${weatherInfo.name}, ${weatherInfo.sys.country}: ` +
+        `${weather.main} - ${weather.description}, ` +
+        `temperature: ${weatherInfo.main.temp} Celsius`;
+    return respnseText;
 }

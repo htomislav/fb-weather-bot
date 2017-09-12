@@ -5,8 +5,8 @@ const propertiesProvider = require('../propertiesProvider');
 module.exports = {
 
     // sends weather queries to Weather API service
-    sendWeatherQuery: function (locationName) {
-        return new Promise(function (resolve, reject) {
+    sendWeatherQuery(locationName) {
+        return new Promise((resolve, reject) => {
             request({
                 uri: 'http://api.openweathermap.org/data/2.5/weather?q='
                 + locationName
@@ -15,13 +15,13 @@ module.exports = {
                 method: 'GET',
                 timeout: 5000,
                 json: true
-            }, function (error, response, body) {
+            }, (error, response, body) => {
                 if (!error) {
                     if (response.statusCode == 200) {
-                        console.log("Successfully queried weather API for", locationName)
+                        console.log(`Successfully queried weather API for ${locationName}`)
                         resolve(body);
                     } else {
-                        console.error("Weather service response was not regular, HTTP status", response.statusCode, "body:", body);
+                        console.error(`Weather service response was not regular - HTTP status: ${response.statusCode}, body: ${body}`);
                         resolve()
                     }
                 } else {

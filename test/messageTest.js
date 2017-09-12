@@ -1,67 +1,67 @@
 require('./utils/testSetup')
 const propertiesProvider = require('../services/propertiesProvider');
 
-var chai = require('chai');
-var chaiAsPromised = require("chai-as-promised");
+const chai = require('chai');
+const chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
-var expect = chai.expect;
-var request = require("supertest-as-promised");
-var nock = require('nock');
-var eventualAwait = require('./utils/eventualAwait')
-var app = require('../app').app;
+const expect = chai.expect;
+const request = require("supertest-as-promised");
+const nock = require('nock');
+const eventualAwait = require('./utils/eventualAwait')
+const app = require('../app').app;
 const db = require('../db/db');
 const weatherDal = require('../db/weatherDal');
 
 const BOT_SERVICE_ID = 100000;
 const FACEBOOK_SERVICE_ID = 200000;
 
-describe('Message', function () {
+describe('Message', () => {
 
-    beforeEach(function (done) {
+    beforeEach((done) => {
         nock.cleanAll();
-        eventualAwait(function () {
+        eventualAwait(() => {
             return db.isInitialized();
         })
-            .then(function () {
+            .then(() => {
                 weatherDal.deleteAllCurrentWeathers()
-                    .then(function () {
+                    .then(() => {
                         done();
                     })
             })
     })
 
-    it('Unknown message results in help answer', function (done) {
+    it('Unknown message results in help answer', (done) => {
         const messsageText = "To search for current weather, type:\n'weather <city>,<country>'\n(<country> is optional)";
-        var facebookSendApiMock = mockFacebookSendApi().expectMessage(messsageText);
+        let facebookSendApiMock = mockFacebookSendApi().expectMessage(messsageText);
         request(app)
             .post('/webhook')
             .send(createFacebookPageBody("test message"))
             .expect(200)
-            .then(function (res) {
+            .then((res) => {
                 expect(res.body).to.deep.equal({})
-                return eventualAwait(function () {
+                return eventualAwait(() => {
                     return facebookSendApiMock.isSuccessfullyCalled;
                 })
             })
-            .then(function (res) {
+            .then((res) => {
                 done();
             })
     }).timeout(1000);
 
-    it('Invalid page returns HTTP 400', function (done) {
+    it('Invalid page returns HTTP 400', (done) => {
         request(app)
             .post('/webhook')
             .send({})
             .expect(400)
-            .then(function (res) {
+            .then((res) => {
                 done();
             })
     }).timeout(1000);
 
-    it('Weather query returns weather info', function (done) {
-        var facebookSendApiMock = mockFacebookSendApi()
+    it('Weather query returns weather info', (done) => {
+        let facebookSendApiMock = mockFacebookSendApi()
             .expectMessage("London, GB: Clouds - scattered clouds, temperature: 12.34 Celsius");
-        var weatherApiMock = mockWeatherApi()
+        let weatherApiMock = mockWeatherApi()
             .expectWeatherQuery("london,uk")
             .weatherInfo({
                 mainWeather: "Clouds",
@@ -74,22 +74,22 @@ describe('Message', function () {
             .post('/webhook')
             .send(createFacebookPageBody("weather london, uk"))
             .expect(200)
-            .then(function (res) {
+            .then((res) => {
                 expect(res.body).to.deep.equal({})
             })
-            .then(function () {
+            .then(() => {
                 // APIs might be called after the response
                 return eventualAwaitForFacebookAndWeatherMocks(facebookSendApiMock, weatherApiMock)
             })
-            .then(function () {
+            .then(() => {
                 done();
             })
     }).timeout(2000);
 
-    it('Second weather query uses cache', function (done) {
-        var facebookSendApiMock = mockFacebookSendApi()
+    it('Second weather query uses cache', (done) => {
+        let facebookSendApiMock = mockFacebookSendApi()
             .expectMessage("London, GB: Clouds - scattered clouds, temperature: 12.34 Celsius");
-        var weatherApiMock = mockWeatherApi()
+        let weatherApiMock = mockWeatherApi()
             .expectWeatherQuery("london,uk")
             .weatherInfo({
                 mainWeather: "Clouds",
@@ -103,14 +103,14 @@ describe('Message', function () {
             .post('/webhook')
             .send(createFacebookPageBody("weather london, uk"))
             .expect(200)
-            .then(function (res) {
+            .then((res) => {
                 expect(res.body).to.deep.equal({})
             })
-            .then(function () {
+            .then(() => {
                 // APIs might be called after the response
                 return eventualAwaitForFacebookAndWeatherMocks(facebookSendApiMock, weatherApiMock)
             })
-            .then(function () {
+            .then(() => {
                 // restart the API mocks
                 nock.cleanAll();
                 facebookSendApiMock = mockFacebookSendApi()
@@ -131,29 +131,29 @@ describe('Message', function () {
                     .post('/webhook')
                     .send(createFacebookPageBody("weather london, uk"))
                     .expect(200)
-                    .then(function (res) {
+                    .then((res) => {
                         expect(res.body).to.deep.equal({})
                     })
             })
-            .then(function () {
+            .then(() => {
                 // Facebook API might be called after the response
-                return eventualAwait(function () {
+                return eventualAwait(() => {
                     return facebookSendApiMock.nock.isDone();
                 })
             })
-            .then(function () {
+            .then(() => {
                 // delay a bit in case Weather API gets called
                 return delay(2000)
             })
-            .then(function () {
+            .then(() => {
                 done();
             })
     }).timeout(5000);
 
-    it('Cached queries are case insensitive ', function (done) {
-        var facebookSendApiMock = mockFacebookSendApi()
+    it('Cached queries are case insensitive ', (done) => {
+        let facebookSendApiMock = mockFacebookSendApi()
             .expectMessage("London, GB: Clouds - scattered clouds, temperature: 12.34 Celsius");
-        var weatherApiMock = mockWeatherApi()
+        let weatherApiMock = mockWeatherApi()
             .expectWeatherQuery("london,uk")
             .weatherInfo({
                 mainWeather: "Clouds",
@@ -167,14 +167,14 @@ describe('Message', function () {
             .post('/webhook')
             .send(createFacebookPageBody("weather london, uk"))
             .expect(200)
-            .then(function (res) {
+            .then((res) => {
                 expect(res.body).to.deep.equal({})
             })
-            .then(function () {
+            .then(() => {
                 // APIs might be called after the response
                 return eventualAwaitForFacebookAndWeatherMocks(facebookSendApiMock, weatherApiMock)
             })
-            .then(function () {
+            .then(() => {
                 // restart the API mocks
                 nock.cleanAll();
                 facebookSendApiMock = mockFacebookSendApi()
@@ -195,43 +195,43 @@ describe('Message', function () {
                     .post('/webhook')
                     .send(createFacebookPageBody("weather LONDON, uk"))
                     .expect(200)
-                    .then(function (res) {
+                    .then((res) => {
                         expect(res.body).to.deep.equal({})
                     })
             })
-            .then(function () {
+            .then(() => {
                 // Facebook API might be called after the response
-                return eventualAwait(function () {
+                return eventualAwait(() => {
                     return facebookSendApiMock.nock.isDone();
                 })
             })
-            .then(function () {
+            .then(() => {
                 // delay a bit in case Weather API gets called
                 return delay(2000)
             })
-            .then(function () {
+            .then(() => {
                 done();
             })
     }).timeout(5000);
 
-    it('Weather service returns status 500', function (done) {
-        var facebookSendApiMock = mockFacebookSendApi()
+    it('Weather service returns status 500', (done) => {
+        let facebookSendApiMock = mockFacebookSendApi()
             .expectMessage("Weather service is temporary unavailable, please try again later");
-        var weatherApiMock = mockWeatherApi()
+        let weatherApiMock = mockWeatherApi()
             .expectWeatherQuery("london,uk")
             .invalidHttpStatus(500);
         request(app)
             .post('/webhook')
             .send(createFacebookPageBody("weather london, uk"))
             .expect(200)
-            .then(function (res) {
+            .then((res) => {
                 expect(res.body).to.deep.equal({})
             })
-            .then(function () {
+            .then(() => {
                 // APIs might be called after the response
                 return eventualAwaitForFacebookAndWeatherMocks(facebookSendApiMock, weatherApiMock)
             })
-            .then(function () {
+            .then(() => {
                 done();
             })
     }).timeout(2000);
@@ -239,7 +239,7 @@ describe('Message', function () {
 })
 
 function delay(mSec) {
-    return new Promise(function (resolve) {
+    return new Promise((resolve) => {
         setTimeout(resolve, mSec)
     });
 }
@@ -269,21 +269,22 @@ function createFacebookPageBody(messageText) {
 }
 
 function mockFacebookSendApi() {
-    var mockObject = {
-        init: function () {
+    let mockObject = {
+        init() {
             mockObject.nock = nock('https://graph.facebook.com')
-                .post('/v2.6/me/messages?access_token=' + propertiesProvider.PAGE_ACCESS_TOKEN, function (body) {
-                    expect(body.recipient.id).to.equal(FACEBOOK_SERVICE_ID)
-                    expect(body.message.text).to.equal(mockObject.messsageText)
-                    mockObject.isSuccessfullyCalled = true;
-                    return true;
-                })
+                .post(`/v2.6/me/messages?access_token=${propertiesProvider.PAGE_ACCESS_TOKEN}`,
+                    (body) => {
+                        expect(body.recipient.id).to.equal(FACEBOOK_SERVICE_ID)
+                        expect(body.message.text).to.equal(mockObject.messsageText)
+                        mockObject.isSuccessfullyCalled = true;
+                        return true;
+                    })
                 .reply(200, {
                     recipient_id: FACEBOOK_SERVICE_ID,
                     message_id: 987654321
                 });
         },
-        expectMessage: function (messsageText) {
+        expectMessage(messsageText) {
             this.messsageText = messsageText;
             return this;
         }
@@ -293,22 +294,23 @@ function mockFacebookSendApi() {
 }
 
 function mockWeatherApi() {
-    var mockObject = {
-        expectWeatherQuery: function (weatherQuery) {
+    let mockObject = {
+        expectWeatherQuery(weatherQuery) {
             mockObject.nock = nock('http://api.openweathermap.org')
-                .get('/data/2.5/weather?q=' + weatherQuery + '&APPID=' + propertiesProvider.WEATHER_APP_ID + "&units=metric", function (body) {
-                    mockObject.isSuccessfullyCalled = true;
-                    return true;
-                })
+                .get(`/data/2.5/weather?q=${weatherQuery}&APPID=${propertiesProvider.WEATHER_APP_ID}&units=metric`,
+                    (body) => {
+                        mockObject.isSuccessfullyCalled = true;
+                        return true;
+                    })
             return mockObject;
         },
-        weatherInfo: function (weatherInfo) {
+        weatherInfo(weatherInfo) {
             // real nock is received after the reply() call!
             mockObject.nock = mockObject.nock
                 .reply(200, getWeatherData(weatherInfo));
             return mockObject;
         },
-        invalidHttpStatus: function (httpStatus) {
+        invalidHttpStatus(httpStatus) {
             // real nock is received after the reply() call!
             mockObject.nock = mockObject.nock
                 .reply(httpStatus);
@@ -366,11 +368,11 @@ function getWeatherData(weatherInfo) {
 }
 
 function eventualAwaitForFacebookAndWeatherMocks(facebookSendApiMock, weatherApiMock) {
-    return eventualAwait(function () {
+    return eventualAwait(() => {
         return facebookSendApiMock.nock.isDone();
     })
-        .then(function () {
-            return eventualAwait(function () {
+        .then(() => {
+            return eventualAwait(() => {
                 return weatherApiMock.nock.isDone();
             })
         })

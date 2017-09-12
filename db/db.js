@@ -6,11 +6,11 @@ const weatherDal = require('./weatherDal');
 // tell mongoose to use bluebird promises
 mongoose.Promise = Promise;
 
-var isDbInitialized = false;
+let isDbInitialized = false;
 
 // connect to MongoDB and initialize mongoose schemas
-mongoose.connect(propertiesProvider.MONGODB_URI, { useMongoClient: true })
-    .then(function () {
+mongoose.connect(propertiesProvider.MONGODB_URI, {useMongoClient: true})
+    .then(() => {
         console.log('Connected to MongoDB');
         weatherDal.init();
         isDbInitialized = true;
@@ -18,7 +18,7 @@ mongoose.connect(propertiesProvider.MONGODB_URI, { useMongoClient: true })
     })
 
 module.exports = {
-    isInitialized: function () {
+    isInitialized() {
         return isDbInitialized;
     }
 };
