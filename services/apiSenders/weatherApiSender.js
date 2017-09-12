@@ -3,6 +3,8 @@ const request = require('request');
 const propertiesProvider = require('../propertiesProvider');
 
 module.exports = {
+
+    // sends weather queries to Weather API service
     sendWeatherQuery: function (locationName) {
         return new Promise(function (resolve, reject) {
             request({

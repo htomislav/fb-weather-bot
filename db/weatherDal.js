@@ -5,7 +5,7 @@ var CurrentWeather;
 
 module.exports = {
 
-    // syncrchronous method
+    // initializes weather schema (synchronous method)
     init: function () {
         var currentWeatherSchema = mongoose.Schema({
             locationName: {type: String, unique: true, index: true},
@@ -16,6 +16,7 @@ module.exports = {
         CurrentWeather = mongoose.model('CurrentWeather', currentWeatherSchema);
     },
 
+    // updates current weather in DB. does not return anything.
     updateCurrentWeather: function (locationName, weatherInfo) {
         return CurrentWeather.findOneAndUpdate(
             {locationName: locationName},
@@ -26,10 +27,12 @@ module.exports = {
             });
     },
 
+    // finds weather object by locationName
     findCurrentWeather: function (locationName) {
         return CurrentWeather.findOne({locationName: locationName});
     },
 
+    // deletes all weather objects
     deleteAllCurrentWeathers: function () {
         return CurrentWeather.remove({});
     }

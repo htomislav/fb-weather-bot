@@ -5,6 +5,7 @@ const verificationService = require('../services/verificationService')
 module.exports = function () {
     var router = express.Router();
 
+    // webhook verification route
     router.get('',
         function (req, res) {
             var result = verificationService.verify({

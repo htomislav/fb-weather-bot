@@ -4,6 +4,7 @@ const messageService = require('../services/messageService')
 module.exports = function () {
     var router = express.Router();
 
+    // webhook's message processing route
     router.post('', function (req, res) {
         try {
             if (messageService.process(req.body)) {

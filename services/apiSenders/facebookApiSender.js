@@ -3,6 +3,8 @@ const request = require('request');
 const propertiesProvider = require('../propertiesProvider');
 
 module.exports = {
+
+    // sends message responses to Facebook Send API
     send: function (messageData) {
         return new Promise(function (resolve, reject) {
             request({

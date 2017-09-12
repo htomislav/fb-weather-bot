@@ -1,6 +1,8 @@
 const propertiesProvider = require('./propertiesProvider');
 
 module.exports = {
+
+    // verifies webhook
     verify: function (verificationData) {
         if (verificationData.mode === 'subscribe' &&
             verificationData.token === propertiesProvider.WEBHOOK_VERIFY_TOKEN) {

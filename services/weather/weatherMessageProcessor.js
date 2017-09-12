@@ -3,6 +3,8 @@ const weatherDal = require('../../db/weatherDal');
 
 module.exports = {
 
+    // processes successful weather match results by either contacting weather API
+    // for result or returning the result from the cache.
     process: function (weatherMatchResult) {
         const locationName = toLocationName(weatherMatchResult);
 

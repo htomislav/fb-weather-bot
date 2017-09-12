@@ -8,6 +8,7 @@ mongoose.Promise = Promise;
 
 var isDbInitialized = false;
 
+// connect to MongoDB and initialize mongoose schemas
 mongoose.connect(propertiesProvider.MONGODB_URI)
     .then(function () {
         console.log('Connected to MongoDB');

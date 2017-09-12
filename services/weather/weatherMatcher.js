@@ -1,5 +1,7 @@
 module.exports = {
 
+    // tries to match users message agains the weather regexp
+    // returns match result if success, null otherwise
     match: function (message) {
         var regexpMatch = new RegExp('weather\\s([a-zA-Z]+)[,\\s]*([a-zA-Z]*).*$', 'i').exec(message);
         if (!regexpMatch) {

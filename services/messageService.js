@@ -4,6 +4,9 @@ const facebookApiSender = require('./apiSenders/facebookApiSender')
 
 module.exports = {
 
+    // processes messages from Facebook (synchronous method)
+    // complete processing is done asynchronously after the method returns result.
+    // returns true if input data looks ok, false otherwise.
     process: function (messageObject) {
         if (messageObject && messageObject.object === 'page') {
             messageObject.entry.forEach(function (entry) {

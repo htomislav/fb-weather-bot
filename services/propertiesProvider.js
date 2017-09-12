@@ -1,4 +1,6 @@
 
+// validates and provides app properties
+
 // WEATHER_ENTRY_EXPIRATION_SECONDS check
 if (!process.env.WEATHER_ENTRY_EXPIRATION_SECONDS) {
     throw Error("WEATHER_ENTRY_EXPIRATION_SECONDS is undefined")
