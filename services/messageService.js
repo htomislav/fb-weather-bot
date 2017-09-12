@@ -9,7 +9,8 @@ module.exports = {
             messageObject.entry.forEach(function (entry) {
                 entry.messaging.forEach(function (event) {
                     if (event.message) {
-                        processMessageEvent(event) // todo - async call?
+                        // process message asynchronously
+                        processMessageEvent(event)
                     } else if (event.delivery) {
                         console.log("Received delivery event for", event.delivery.mids);
                     } else {
@@ -42,6 +43,9 @@ function processMessageEvent(event) {
                     text: responseMessage
                 }
             });
+        })
+        .catch(function (err) {
+            console.error("Error while processing message text", err)
         })
 }
 

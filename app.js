@@ -35,14 +35,18 @@ module.exports = {
 
 // todo
 // - logging
-// - handle exceptions in routers
 // - es7
-// - what does weather api block response look like?
 // - add time of query to msg response
 // - add new lines to msg response
 // - add service version to route
 // - package.json: dev dependencies, repository
 // - comments
 // - dev mode
-// - expires - need to delete index! (https://stackoverflow.com/questions/14597241/setting-expiry-time-for-a-collection-in-mongodb-using-mongoose)
 // - console log warning related to mongodb etc
+
+
+// to be done
+// - better chat bot
+// - improve logging
+// - what does weather api block response look like?
+// - expires - need to delete index! (https://stackoverflow.com/questions/14597241/setting-expiry-time-for-a-collection-in-mongodb-using-mongoose)
