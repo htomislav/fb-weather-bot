@@ -34,12 +34,7 @@ module.exports = {
 };
 
 // todo
-// - logging
 // - es7
-// - add time of query to msg response
-// - add new lines to msg response
-// - add service version to route
-// - package.json: dev dependencies, repository
 // - comments
 // - dev mode
 // - console log warning related to mongodb etc
