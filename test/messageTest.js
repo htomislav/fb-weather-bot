@@ -56,7 +56,7 @@ describe('Message', function () {
             })
     }).timeout(1000);
 
-    it('Weather query', function (done) {
+    it('Weather query returns weather info', function (done) {
         var facebookSendApiMock = mockFacebookSendApi()
             .expectMessage("London, GB: Clouds - scattered clouds, temperature: 12.34 Celsius");
         var weatherApiMock = mockWeatherApi()
@@ -76,23 +76,15 @@ describe('Message', function () {
                 expect(res.body).to.deep.equal({})
             })
             .then(function () {
-                // Weather API might be called after the response
-                return eventualAwait(function () {
-                    return weatherApiMock.nock.isDone();
-                })
-            })
-            .then(function () {
-                // Facebook API might be called after the response
-                return eventualAwait(function () {
-                    return facebookSendApiMock.nock.isDone();
-                })
+                // APIs might be called after the response
+                return eventualAwaitForFacebookAndWeatherMocks(facebookSendApiMock, weatherApiMock)
             })
             .then(function () {
                 done();
             })
     }).timeout(2000);
 
-    it('Weather query cache', function (done) {
+    it('Second weather query uses cache', function (done) {
         var facebookSendApiMock = mockFacebookSendApi()
             .expectMessage("London, GB: Clouds - scattered clouds, temperature: 12.34 Celsius");
         var weatherApiMock = mockWeatherApi()
@@ -113,16 +105,8 @@ describe('Message', function () {
                 expect(res.body).to.deep.equal({})
             })
             .then(function () {
-                // Weather API might be called after the response
-                return eventualAwait(function () {
-                    return weatherApiMock.nock.isDone();
-                })
-            })
-            .then(function () {
-                // Facebook API might be called after the response
-                return eventualAwait(function () {
-                    return facebookSendApiMock.nock.isDone();
-                })
+                // APIs might be called after the response
+                return eventualAwaitForFacebookAndWeatherMocks(facebookSendApiMock, weatherApiMock)
             })
             .then(function () {
                 // restart the API mocks
@@ -164,7 +148,7 @@ describe('Message', function () {
             })
     }).timeout(5000);
 
-    it('Weather query cache - case sensitivity', function (done) {
+    it('Cached queries are case insensitive ', function (done) {
         var facebookSendApiMock = mockFacebookSendApi()
             .expectMessage("London, GB: Clouds - scattered clouds, temperature: 12.34 Celsius");
         var weatherApiMock = mockWeatherApi()
@@ -185,23 +169,15 @@ describe('Message', function () {
                 expect(res.body).to.deep.equal({})
             })
             .then(function () {
-                // Weather API might be called after the response
-                return eventualAwait(function () {
-                    return weatherApiMock.nock.isDone();
-                })
-            })
-            .then(function () {
-                // Facebook API might be called after the response
-                return eventualAwait(function () {
-                    return facebookSendApiMock.nock.isDone();
-                })
+                // APIs might be called after the response
+                return eventualAwaitForFacebookAndWeatherMocks(facebookSendApiMock, weatherApiMock)
             })
             .then(function () {
                 // restart the API mocks
                 nock.cleanAll();
                 facebookSendApiMock = mockFacebookSendApi()
                     .expectMessage("London, GB: Clouds - scattered clouds, temperature: 12.34 Celsius");
-                // this should not be called (if called, assertions will fail)
+                // Weather API should not be called (if called, assertions will fail)
                 weatherApiMock = mockWeatherApi()
                     .expectWeatherQuery("london,uk")
                     .weatherInfo({
@@ -211,7 +187,7 @@ describe('Message', function () {
                         cityName: "London",
                         country: "GB",
                     });
-                // Send the second query (this one should NOT call
+                // Send the second query with capital case (this one should NOT call
                 // the Weather API, it should use cache instead)
                 return request(app)
                     .post('/webhook')
@@ -239,7 +215,7 @@ describe('Message', function () {
 })
 
 function delay(mSec) {
-    return new Promise(function(resolve) {
+    return new Promise(function (resolve) {
         setTimeout(resolve, mSec)
     });
 }
@@ -356,4 +332,15 @@ function getWeatherData(weatherInfo) {
         name: weatherInfo.cityName,
         cod: 200
     }
+}
+
+function eventualAwaitForFacebookAndWeatherMocks(facebookSendApiMock, weatherApiMock) {
+    return eventualAwait(function () {
+        return facebookSendApiMock.nock.isDone();
+    })
+        .then(function () {
+            return eventualAwait(function () {
+                return weatherApiMock.nock.isDone();
+            })
+        })
 }
