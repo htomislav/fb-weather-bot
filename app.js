@@ -22,6 +22,11 @@ app.use(function (req, res, next) {
 app.use('/', require('./routes/statusRouter')());
 app.use('/webhook', require('./routes/verificationRouter')());
 app.use('/webhook', require('./routes/messageRouter')());
+// general error handler
+app.use(function (err, req, res, next) {
+    console.error("Internal server error", err)
+    res.status(500);
+})
 
 // server
 var port = process.env.PORT || 3000;
@@ -36,7 +41,6 @@ module.exports = {
 
 // todo
 // - es7
-// - dev mode
 // - console log warning related to mongodb etc
 
 
