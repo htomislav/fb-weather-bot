@@ -38,9 +38,3 @@ app.listen(port, () => {
 module.exports = {
     app: app,
 };
-
-// to be done
-// - better chat bot
-// - improve logging
-// - what does weather api block response look like?
-// - expires - need to delete index! (https://stackoverflow.com/questions/14597241/setting-expiry-time-for-a-collection-in-mongodb-using-mongoose)
