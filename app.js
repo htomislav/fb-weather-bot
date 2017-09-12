@@ -30,7 +30,7 @@ app.use(function (err, req, res, next) {
 
 // server
 var port = process.env.PORT || 3000;
-app.listen(port, function () {
+app.listen(port, () => {
     console.log('App listening on port', port)
 })
 
